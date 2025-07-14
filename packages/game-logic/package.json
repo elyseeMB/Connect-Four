@@ -1,0 +1,13 @@
+{
+  "name": "@connect-four/game-logic",
+  "description": "Core game logic and state machine for Connect Four. Handles game rules, moves, and win detection.",
+  "type": "module",
+  "main": "src/main.ts",
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "xstate": "^5.20.1"
+  }
+}

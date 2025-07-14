@@ -1,0 +1,13 @@
+{
+  "name": "@connect-four/main",
+  "description": "A modular monorepo for the Connect Four game, including web and CLI apps, shared UI components, and core game logic.",
+  "packageManager": "pnpm@9.15.2+sha1.0ffb02f94047016ec7e088030337455b4c94bb34",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  }
+}

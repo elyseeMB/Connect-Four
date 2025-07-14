@@ -1,0 +1,4 @@
+{
+  "name": "@connect-four/utils",
+  "description": "Shared utility functions used across the Connect Four project, such as matrix helpers and general-purpose tools."
+}

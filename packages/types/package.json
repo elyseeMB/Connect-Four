@@ -1,4 +1,0 @@
-{
-  "name": "@connect-four/types",
-  "description": "Shared TypeScript types used across the Connect Four project."
-}

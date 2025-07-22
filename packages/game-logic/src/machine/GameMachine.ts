@@ -1,46 +1,57 @@
 import {
   assign,
   createActor,
-  createMachine,
   setup,
   type EventObject,
   type MachineConfig,
+  type ParameterizedObject,
 } from "xstate";
+
 import { initialContext } from "../context.ts";
 import { GameStates } from "../enums/GameState.ts";
-import type { ContextProps, CustomsEvents } from "../types/types.ts";
+import type { ContextProps, CustomsEvents, JoinEvent } from "../types/types.ts";
 import {
   chooseColor,
   dropToken,
-  join,
-  leave,
+  joinGameAction,
+  leaveGameAction,
   restart,
   start,
-} from "../functions.ts";
+} from "../actions.ts";
 
 const feedbackMachine = setup({
   types: {
     events: {} as CustomsEvents,
     context: initialContext,
   },
+  guards: {
+    canJoinGuard: (_, params: { context: ContextProps; event: JoinEvent }) => {
+      return (
+        params.context.players.length < 2 &&
+        params.context.players.find((p) => p.id === params.event.playerId) ===
+          undefined
+      );
+    },
+  },
 }).createMachine({
   id: "game",
-  context: initialContext!,
   initial: GameStates.LOBBY,
   states: {
     [GameStates.LOBBY]: {
       on: {
         join: {
-          actions: assign({
-            players: join,
-          }),
-
+          guard: {
+            type: "canJoinGuard",
+            params: ({ context, event }) => ({
+              context,
+              event,
+            }),
+          },
+          actions: [assign(joinGameAction)],
           target: GameStates.LOBBY,
         },
         leave: {
-          actions: assign({
-            players: leave,
-          }),
+          actions: [assign(leaveGameAction)],
           target: GameStates.LOBBY,
         },
         chooseColor: {
@@ -63,7 +74,7 @@ const feedbackMachine = setup({
           actions: assign({
             players: dropToken,
           }),
-          target: "???",
+          target: GameStates.VICTORY,
         },
       },
     },
@@ -87,10 +98,14 @@ const feedbackMachine = setup({
   },
 });
 
-const feedbackActor = createActor(feedbackMachine);
+const feedbackActor = createActor(feedbackMachine).start();
 
 feedbackActor.send({
   type: "join",
   playerId: "2",
   name: "je suis le name",
+});
+
+feedbackActor.subscribe((state) => {
+  console.log("Nouvel état", state.value);
 });

@@ -1,3 +1,4 @@
+import type { createMachine } from "xstate";
 import type {
   ChooseColorEvent,
   ContextProps,
@@ -7,25 +8,27 @@ import type {
   StartEvent,
 } from "./types/types.ts";
 
-export const join = ({
+export const joinGameAction = ({
   context,
   event,
 }: {
   context: ContextProps;
   event: JoinEvent;
-}): ContextProps["players"] => [
-  ...context.players,
-  { id: event.playerId, name: event.name },
-];
+}): ContextProps => ({
+  ...context,
+  players: [...context.players, { id: event.playerId, name: event.name }],
+});
 
-export const leave = ({
+export const leaveGameAction = ({
   context,
   event,
 }: {
   context: ContextProps;
   event: LeaveEvent;
-}): ContextProps["players"] =>
-  context.players.filter((player) => player.id !== event.playerId);
+}): ContextProps => ({
+  ...context,
+  players: context.players.filter((player) => player.id !== event.playerId),
+});
 
 export const chooseColor = ({
   context,

@@ -1,6 +1,3 @@
-Voici un **README simple et clair en anglais** pour ton projet **Connect Four en monorepo**, avec `pnpm` et `turbo` :
-
----
 
 ```markdown
 # 🎯 Connect Four Monorepo

@@ -1,6 +1,6 @@
 import type { ContextProps, GridState, Init, Player } from "./types/types.ts";
 
-export const initialContext: Init<ContextProps>["context"] = {
+export const initialContext: ContextProps = {
   players: [] as Player[],
   currentPlayer: null as null | Player["id"],
   rowLength: 4,

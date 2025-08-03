@@ -46,10 +46,14 @@ export type StartEvent = {
   playerId: Player["id"];
 };
 
-export type DropTokentEvent = {
-  type: "start";
+export type DropTokenEvent = {
+  type: "dropToken";
   playerId: Player["id"];
   x: number;
+};
+
+export type RestartEvent = {
+  type: "restart";
 };
 
 export type CustomsEvents =
@@ -57,8 +61,8 @@ export type CustomsEvents =
   | LeaveEvent
   | ChooseColorEvent
   | StartEvent
-  | DropTokentEvent
-  | { type: "restart" };
+  | DropTokenEvent
+  | RestartEvent;
 
 export type ContextProps = {
   players: Player[];
@@ -77,3 +81,8 @@ export type Init<TContext extends MachineContext> = SetupTypes<
   EventObject,
   MetaObject
 >;
+
+export const initialSetupType = {
+  events: {} as CustomsEvents,
+  context: {} as ContextProps,
+};

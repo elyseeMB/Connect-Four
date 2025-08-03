@@ -61,12 +61,6 @@ importers:
 
   packages/game-logic:
     dependencies:
-      '@connect-four/types':
-        specifier: workspace:*
-        version: link:../types
-      '@connect-four/utils':
-        specifier: workspace:*
-        version: link:../utils
       xstate:
         specifier: ^5.20.1
         version: 5.20.1
@@ -77,6 +71,9 @@ importers:
       vite:
         specifier: ^7.0.4
         version: 7.0.4
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@vitest/browser@3.2.4)
 
   packages/types:
     dependencies:

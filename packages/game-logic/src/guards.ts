@@ -1,15 +1,23 @@
-import type { GuardPredicate } from "xstate/guards";
-import type { ContextProps, JoinEvent } from "./types/types.ts";
-import type { ParameterizedObject } from "xstate";
+import type { ContextProps, CustomsEvents } from "./types/types.ts";
 
-export const canJoinGuard: GuardPredicate<
-  ContextProps,
-  JoinEvent,
-  CustomEvent,
-  ParameterizedObject
-> = ({ context, event }) => {
-  return (
-    context.players.length < 2 &&
-    context.players.find((p) => p.id === event.playerId) === undefined
-  );
+export const guards = {
+  canJoinGuard: ({
+    context,
+    event,
+  }: {
+    context: ContextProps;
+    event: CustomsEvents;
+  }) => {
+    if (event.type !== "join") {
+      return false;
+    }
+    if (!context.players || !Array.isArray(context.players)) {
+      console.error("Players array not initialized ");
+      return false;
+    }
+    return (
+      context.players.length < 2 &&
+      !context.players.find((p) => p.id === event.playerId)
+    );
+  },
 };

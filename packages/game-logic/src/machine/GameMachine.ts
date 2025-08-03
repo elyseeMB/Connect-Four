@@ -1,15 +1,8 @@
-import {
-  assign,
-  createActor,
-  setup,
-  type EventObject,
-  type MachineConfig,
-  type ParameterizedObject,
-} from "xstate";
+import { assign, createActor, setup } from "xstate";
 
 import { initialContext } from "../context.ts";
 import { GameStates } from "../enums/GameState.ts";
-import type { ContextProps, CustomsEvents, JoinEvent } from "../types/types.ts";
+import { initialSetupType } from "../types/types.ts";
 import {
   chooseColor,
   dropToken,
@@ -18,35 +11,20 @@ import {
   restart,
   start,
 } from "../actions.ts";
+import { guards } from "../guards.ts";
 
-const feedbackMachine = setup({
-  types: {
-    events: {} as CustomsEvents,
-    context: initialContext,
-  },
-  guards: {
-    canJoinGuard: (_, params: { context: ContextProps; event: JoinEvent }) => {
-      return (
-        params.context.players.length < 2 &&
-        params.context.players.find((p) => p.id === params.event.playerId) ===
-          undefined
-      );
-    },
-  },
+export const feedbackMachine = setup({
+  types: initialSetupType,
+  guards,
 }).createMachine({
   id: "game",
+  context: initialContext,
   initial: GameStates.LOBBY,
   states: {
     [GameStates.LOBBY]: {
       on: {
         join: {
-          guard: {
-            type: "canJoinGuard",
-            params: ({ context, event }) => ({
-              context,
-              event,
-            }),
-          },
+          guard: "canJoinGuard",
           actions: [assign(joinGameAction)],
           target: GameStates.LOBBY,
         },

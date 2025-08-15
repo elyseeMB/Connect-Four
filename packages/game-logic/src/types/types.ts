@@ -32,7 +32,7 @@ export type JoinEvent = {
 
 export type LeaveEvent = {
   type: "leave";
-  playerId: Player["id"];
+  playerId: Player["id"] | undefined;
 };
 
 export type ChooseColorEvent = {
@@ -43,7 +43,7 @@ export type ChooseColorEvent = {
 
 export type StartEvent = {
   type: "start";
-  playerId: Player["id"];
+  playerId?: Player["id"];
 };
 
 export type DropTokenEvent = {

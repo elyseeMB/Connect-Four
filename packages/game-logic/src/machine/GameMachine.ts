@@ -29,16 +29,19 @@ export const feedbackMachine = setup({
           target: GameStates.LOBBY,
         },
         leave: {
+          guard: "canLeaveGuard",
           actions: [assign(leaveGameAction)],
           target: GameStates.LOBBY,
         },
         chooseColor: {
+          guard: "canChooseColorGuard",
           actions: assign({
             players: chooseColor,
           }),
           target: GameStates.LOBBY,
         },
         start: {
+          guard: "canStartGameGuard",
           actions: assign({
             players: start,
           }),
